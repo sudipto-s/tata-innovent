@@ -1,7 +1,6 @@
 import express from "express"
 import sendOtp from "../helper/otpSender.js"
 import { MongoClient } from "mongodb";
-import connectDB from "../helper/connectDB.js"
 import md5 from "md5";
 
 const router = express.Router()
@@ -14,7 +13,7 @@ router.post("/sendotp", async (req, res) => {
       otp += Math.floor(Math.random() * 10)
    }
    try {
-      await connectDB(client)
+      await client.connect()
       await client.db("innovent").collection('otp').deleteOne({ _id: email })
       const messageId = await sendOtp(email, otp)
       await client.db("innovent").collection('otp').insertOne({
@@ -32,7 +31,7 @@ router.post("/sendotp", async (req, res) => {
 router.post("/verifyotp", async (req, res) => {
    const { otp, email } = req.body
    try {
-      await connectDB(client)
+      await client.connect()
       const response = await client.db("innovent").collection("otp").findOne({ _id: email })
       if (response) {
          if (otp === response.otp) {

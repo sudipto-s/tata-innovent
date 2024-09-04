@@ -6,7 +6,8 @@
    "type": "module",
    "scripts": {
       "start": "node index.js",
-      "dev": "nodemon index.js"
+      "dev": "nodemon index.js",
+      "build": "npm install && npm install --prefix ../client && npm run build --prefix ../client && npm start"
    },
    "author": "",
    "license": "ISC",
@@ -20,5 +21,8 @@
       "mongodb": "^6.8.0",
       "mongoose": "^8.5.2",
       "nodemailer": "^6.9.14"
+   },
+   "devDependencies": {
+      "nodemon": "^3.1.4"
    }
 }
