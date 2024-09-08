@@ -19,7 +19,7 @@ const __dirname = path.resolve()
 //Middlewares
 app.use(cors())
 app.use(express.json())
-app.use(express.static(path.join(__dirname, "./client/build")))
+app.use(express.static(path.join(__dirname, "../client/build")))
 
 // Routes
 app.use('/api/v1/user', usersRoute)
@@ -29,7 +29,7 @@ app.use("/api/v1/genai", genAIContent)
 
 // Catches all routes
 app.use("*", (req, res) => {
-   res.sendFile(path.join(__dirname, "./client/build/index.html"))
+   res.sendFile(path.join(__dirname, "../client/build/index.html"))
 })
 
 // MongoDB Connection

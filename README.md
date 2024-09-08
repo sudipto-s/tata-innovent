@@ -10,7 +10,7 @@ models with ease and precision. Join us as we explore how this cutting-edge tech
 To run the documentation locally on your machine, you need [Node.js](https://nodejs.org/en/) installed on your computer.
 
 ### Running documentation locally
-#### N.B.: Check ```.env.example``` files on both client & root directory to setup your own ```.env``` files. Create one .env in root for server & another in client.
+#### N.B.: Check ```.env.example``` files on both client & server directory to setup your own ```.env``` files.
 
 Run these commands to set up the documentation:
 
