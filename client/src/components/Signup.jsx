@@ -31,7 +31,7 @@ const Signup = ({user, setUser}) => {
          return
       }
       try {
-         const { data: data1 } = await axios.get(process.env.REACT_APP_USER)
+         const { data: data1 } = await axios.get(process.env.REACT_APP_USER || "/api/v1/user")
          let emailExists = false
          data1?.forEach(u => {
             if (u.email === email) {
@@ -43,7 +43,7 @@ const Signup = ({user, setUser}) => {
          })
          
          if (!emailExists) {
-            await axios.post(process.env.REACT_APP_SEND_OTP, { email })
+            await axios.post(process.env.REACT_APP_SEND_OTP || "/api/v1/email/sendotp", { email })
             setRegisterForm(false)
          }
       } catch (err) {
@@ -59,7 +59,9 @@ const Signup = ({user, setUser}) => {
       setLoading(true)
 
       try {
-         await axios.post(process.env.REACT_APP_VERIFY_OTP, { email, otp: md5(otp) })
+         await axios.post(process.env.REACT_APP_VERIFY_OTP || "/api/v1/email/verifyotp", {
+            email, otp: md5(otp)
+         })
    
          const { data: data2 } = await axios.post(process.env.REACT_APP_USER, {
             email, password: md5(password)

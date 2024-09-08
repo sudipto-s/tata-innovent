@@ -7,10 +7,10 @@ const deleteAccount = async (_id, setUser) => {
    if (consent === "delete my account") {
       $(".account-delete-btn").text("Deleting account...")
       try {
-         const { data: deleteProposal } = await axios.delete(`${process.env.REACT_APP_PROPOSAL}/${_id}`)
+         const { data: deleteProposal } = await axios.delete(`${process.env.REACT_APP_PROPOSAL || "/api/v1/proposal"}/${_id}`)
          console.log(deleteProposal)
 
-         const { data: deleteUser } = await axios.delete(`${process.env.REACT_APP_USER}/${_id}`)
+         const { data: deleteUser } = await axios.delete(`${process.env.REACT_APP_USER || "/api/v1/user"}/${_id}`)
          console.log(deleteUser)
          removeCookie("innovent-user")
          setUser(null)
