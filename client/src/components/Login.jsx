@@ -23,7 +23,7 @@ const Login = ({rMe, setrMe, user, setUser}) => {
       setLoading(true)
       
       try {
-         const { data } = await axios.get(process.env.REACT_APP_USER || "/api/v1/user")
+         const { data } = await axios.post((process.env.REACT_APP_USER || "/api/v1/user") + "/getall")
          const fromDB = data.find(u => u.email === email)
          const passwordMatched = md5(password) === fromDB?.password
          if (!fromDB) {

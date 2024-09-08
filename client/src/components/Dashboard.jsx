@@ -12,7 +12,7 @@ const Dashboard = ({user, setUser}) => {
       navigate(!user?.logged && "/")
    }, [user, navigate])
    useEffect(() => {
-      user && axios.get(`${process.env.REACT_APP_PROPOSAL || "/api/v1/proposal"}/${user?._id}`)
+      user && axios.post(`${process.env.REACT_APP_PROPOSAL || "/api/v1/proposal"}/get/${user?._id}`)
          .then(res => {
             setProposal(res.data)
          })

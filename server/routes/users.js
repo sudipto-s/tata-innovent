@@ -1,11 +1,12 @@
 import express from "express"
 const router = express.Router()
-import User from "../models/user.js"
+import { ObjectId } from "mongodb"
 
 // Get all
-router.get("/", async (req, res) => {
+router.post("/getall", async (req, res) => {
    try {
-      const users = await User.find()
+      const user_collec = req.app.locals.db.collection("users")
+      const users = await user_collec.find().toArray()
       res.json(users)
    } catch (err) {
       res.status(404).json({message: err.message})
@@ -13,31 +14,36 @@ router.get("/", async (req, res) => {
 })
 
 // Get one
-router.get("/:id", getUser, async (req, res) => {
+router.post("/get/:id", getUser, async (req, res) => {
    res.json(res.user)
 })
 
 // Creating one
-router.post('/', async (req, res) => {
-   const user = new User({
-     email: req.body.email,
-     password: req.body.password
-   })
+router.post('/create', async (req, res) => {
+   const { email, password } = req.body
+   const user = {
+     email, password,
+     acStatus: "Active",
+     created: new Date().toISOString()
+   }
    try {
-     const newUser = await user.save()
+     const user_collec = req.app.locals.db.collection("users")
+     await user_collec.insertOne(user)
+     const newUser = await user_collec.findOne({email})
      res.status(201).json(newUser)
    } catch (err) {
      res.status(400).json({ message: err.message })
    }
 })
  
-// Updating One
-router.patch('/:id', getUser, async (req, res) => {
-   if (req.body.email !== null) {
-     res.user.email = req.body.email
+// Updating One(fix needed)
+router.patch('/update/:id', getUser, async (req, res) => {
+   const { email,  password } = req.body
+   if (email) {
+     res.user.email = email
    }
-   if (req.body.password !== null) {
-     res.user.password = req.body.password
+   if (password) {
+     res.user.password = password
    }
    try {
      const updatedUser = await res.user.save()
@@ -48,9 +54,13 @@ router.patch('/:id', getUser, async (req, res) => {
 })
  
 // Deleting One
-router.delete('/:id', getUser, async (req, res) => {
+router.delete('/:id', async (req, res) => {
    try {
-     await res.user.deleteOne()
+     const user_collec = req.app.locals.db.collection("users")
+     const { deletedCount } = await user_collec.deleteOne({_id: new ObjectId(req.params.id)})
+     if (!deletedCount) {
+       return res.status(404).json({ message: 'User not found' });
+     }
      res.json({ message: 'Deleted User' })
    } catch (err) {
      res.status(500).json({ message: err.message })
@@ -61,8 +71,9 @@ router.delete('/:id', getUser, async (req, res) => {
 async function getUser(req, res, next) {
    let user
    try {
-      user = await User.findById(req.params.id)
-      if (user === null) {
+      const user_collec = req.app.locals.db.collection("users")
+      user = await user_collec.findOne({_id: new ObjectId(req.params.id)})
+      if (!user) {
          return res.status(404).json({ message: 'Cannot find user' })
       }
    } catch (err) {

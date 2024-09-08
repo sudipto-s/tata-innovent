@@ -14,6 +14,7 @@ const sendOtp = async (to, otp) => {
 
    try {
       const response = await transporter.sendMail({
+         from: `AutoGenie <${process.env.EMAIL}>`,
          to,
          subject: "AutoGenie Registration OTP",
          text: `Your verification OTP is: ${otp}`
