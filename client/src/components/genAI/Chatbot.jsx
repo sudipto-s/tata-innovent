@@ -3,12 +3,10 @@ import { useNavigate } from "react-router-dom"
 import M from "materialize-css"
 import { handleEnter } from '../../utils/handleEnter'
 import "materialize-css/dist/css/materialize.min.css"
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import MarkDown from "react-markdown"
+import axios from "axios"
 import $ from "jquery"
 import "../../index.css"
-
-const genai = new GoogleGenerativeAI(process.env.REACT_APP_GENAI_KEY);
 
 const Chatbot = ({user}) => {
    document.title = "AutoGenie - AI"
@@ -47,26 +45,16 @@ const Chatbot = ({user}) => {
       }
       setLoading(true)
       try {
-         const model = genai.getGenerativeModel({
-            model: "gemini-1.5-flash",
-            systemInstruction: "Your name is AutoGenie. Reply with your name when user calls you for the very first time."
-         });
-         const chat = model.startChat({
-            history,
-            generationConfig: {
-            //   maxOutputTokens: 100,
-            },
-         });
-      
-         const txt = input
          setInput2(input)
          setInput("")
-         handleSetHistory("user", txt)
-         const result = await chat.sendMessage(txt);
-         const response = result.response;
-         const text = response.text();
-         // console.log(text);
-         handleSetHistory("model", text)
+         handleSetHistory("user", input)
+
+         const { data } = await axios.post(process.env.REACT_APP_GENAI_NEED || "/api/v1/genai/generate-content", {
+            input, history
+         })
+      
+         const txt = data.text
+         handleSetHistory("model", txt)
          setError(null)
          setLoading(false)
       } catch (err) {

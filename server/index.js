@@ -3,11 +3,13 @@ import mongoose from "mongoose"
 import cors from "cors"
 import "dotenv/config"
 import path from "path"
+import otpLimiter from "./utils/otpLimiter.js"
 
 // Models
 import usersRoute from "./routes/users.js"
 import proposalSchema from "./routes/proposals.js"
 import emailOtpRoute from "./routes/emailOtp.js"
+import genAIContent from "./routes/genAI.js"
 
 const app = express()
 const __dirname = path.resolve()
@@ -18,9 +20,10 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, "../client/build")))
 
 // Routes
-app.use('/api/user', usersRoute)
-app.use('/api/proposal', proposalSchema)
-app.use("/api/email", emailOtpRoute)
+app.use('/api/v1/user', usersRoute)
+app.use('/api/v1/proposal', proposalSchema)
+app.use("/api/v1/email", otpLimiter, emailOtpRoute)
+app.use("/api/v1/genai", genAIContent)
 
 // Catches all routes
 app.use("*", (req, res) => {

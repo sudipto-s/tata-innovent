@@ -1,5 +1,5 @@
 import express from "express"
-import sendOtp from "../helper/otpSender.js"
+import sendOtp from "../utils/otpSender.js"
 import { MongoClient } from "mongodb";
 import md5 from "md5";
 
