@@ -1,10 +1,8 @@
 import express from "express"
 import sendOtp from "../utils/otpSender.js"
-import { MongoClient } from "mongodb";
 import md5 from "md5";
 
 const router = express.Router()
-const client = new MongoClient(process.env.DATABASE_URL)
 
 router.post("/sendotp", async (req, res) => {
    const { email } = req.body
@@ -23,8 +21,6 @@ router.post("/sendotp", async (req, res) => {
    } catch (err) {
       console.error(err)
       res.status(500).json({ message: "Error sending OTP" })
-   } finally {
-      await client.close(0)
    }
 })
 
@@ -35,8 +31,8 @@ router.post("/verifyotp", async (req, res) => {
       const response = await otp_collec.findOne({ _id: email })
       if (response) {
          if (otp === response.otp) {
-            await otp_collec.deleteOne({ _id: email })
             res.json({ message: "OTP verified successfully" })
+            await otp_collec.deleteOne({ _id: email })
          } else {
             res.status(401).json({ message: "Invalid OTP" })
          }
@@ -46,8 +42,6 @@ router.post("/verifyotp", async (req, res) => {
    } catch (err) {
       console.error(err)
       res.status(500).json({ message: "Error verifying OTP" })
-   } finally {
-      await client.close(0)
    }
 })
 

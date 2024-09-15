@@ -2,12 +2,12 @@
    "name": "tata-innovent-server",
    "version": "1.0.0",
    "description": "",
-   "main": "index.js",
+   "main": "server/index.js",
    "type": "module",
    "scripts": {
-      "start": "node index.js",
-      "dev": "nodemon index.js",
-      "build": "npm install && npm install --prefix ../client && npm run build --prefix ../client"
+      "start": "node server/index.js",
+      "dev": "nodemon server/.",
+      "build": "npm install && npm install --prefix client && npm run build --prefix client"
    },
    "author": "",
    "license": "ISC",

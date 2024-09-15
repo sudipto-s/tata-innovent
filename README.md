@@ -14,8 +14,11 @@ To run the documentation locally on your machine, you need [Node.js](https://nod
 
 Run these commands to set up the documentation:
 
+Fork the repo first.
+
+Clone your repo:
 ```bash
-git clone https://github.com/sudipta1254/tata-innovent.git
+git clone https://github.com/{YOUR_USERNAME}/tata-innovent.git
 ```
 <br>
 
@@ -36,5 +39,3 @@ npm install
 npm run dev
 ```
 > Server starts on port 5000
-
-<br>
