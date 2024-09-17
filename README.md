@@ -10,19 +10,20 @@ models with ease and precision. Join us as we explore how this cutting-edge tech
 To run the documentation locally on your machine, you need [Node.js](https://nodejs.org/en/) installed on your computer.
 
 ### Running documentation locally
-#### N.B.: Check ```.env.example``` files on both client & server directory to setup your own ```.env``` files.
 
-Run these commands to set up the documentation:
+#### Run these commands to set up the documentation:
 
-Fork the repo first.
+### 1. Fork the repo.
 
-Clone your repo:
+### 2. Clone your repo:
 ```bash
 git clone https://github.com/{YOUR_USERNAME}/tata-innovent.git
 ```
+
+### 3. Refer ```.env.example``` file to setup your own ```.env``` file.
 <br>
 
-Start the client:
+### 4. Start the client:
 ```bash
 cd tata-innovent/client
 npm install
@@ -32,7 +33,7 @@ npm start
 
 <br>
 
-Start the server:
+### 5. Start the server:
 ```bash
 cd tata-innovent/server
 npm install

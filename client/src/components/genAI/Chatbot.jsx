@@ -49,7 +49,7 @@ const Chatbot = ({user}) => {
          setInput("")
          handleSetHistory("user", input)
 
-         const { data } = await axios.post(process.env.REACT_APP_GENAI_NEED || "/api/v1/genai/generate-content", {
+         const { data } = await axios.post("/api/v1/genai/generate-content", {
             input, history
          })
       

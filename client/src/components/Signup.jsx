@@ -31,7 +31,7 @@ const Signup = ({user, setUser}) => {
          return
       }
       try {
-         const { data: data1 } = await axios.post((process.env.REACT_APP_USER || "/api/v1/user") + "/getall")
+         const { data: data1 } = await axios.post("/api/v1/user/getall")
          let emailExists = false
          data1?.forEach(u => {
             if (u.email === email) {
@@ -43,7 +43,7 @@ const Signup = ({user, setUser}) => {
          })
          
          if (!emailExists) {
-            await axios.post(process.env.REACT_APP_SEND_OTP || "/api/v1/email/sendotp", { email })
+            await axios.post("/api/v1/email/sendotp", { email })
             setRegisterForm(false)
          }
       } catch (err) {
@@ -60,17 +60,17 @@ const Signup = ({user, setUser}) => {
 
       try {
          // Verify OTP stored in DB
-         await axios.post(process.env.REACT_APP_VERIFY_OTP || "/api/v1/email/verifyotp", {
+         await axios.post("/api/v1/email/verifyotp", {
             email, otp: md5(otp)
          })
    
          // Create an user if OTP is verified
-         const { data: data2 } = await axios.post((process.env.REACT_APP_USER || "/api/v1/user") + "/create", {
+         const { data: data2 } = await axios.post("/api/v1/user/create", {
             email, password: md5(password)
          })
          
          // Create a proposal if user is created
-         await axios.post((process.env.REACT_APP_PROPOSAL || "/api/v1/proposal") + "/create", {
+         await axios.post("/api/v1/proposal/create", {
             email, associated: data2._id
          })
          
